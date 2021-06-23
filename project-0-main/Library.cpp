@@ -22,7 +22,7 @@ std::string Library::printMap(std::map<std::string, std::vector<Book*>> map) con
         std::string key = entry.first;
         std::vector<Book*> books = entry.second;
         output << "\t" << key << std::endl;
-        for (Book* book : books) {
+        for (Book* book : books) { //when fantasy ran, there was only one book in books
             output << "\t\t" << *book << std::endl;
             numHours += book->getHours();
             numPages += book->getPages();
@@ -66,14 +66,17 @@ void Library::organizeBooksByGenre() {
     for (Book* book : books) {
         std::string genre = book->getGenre();
         std::map<std::string,std::vector<Book*>>::iterator it = booksByGenre.find(genre);
+
         if (it == booksByGenre.end()) {
             std::vector<Book*> bookList;
             bookList.push_back(book);
             booksByGenre.insert(std::pair<std::string, std::vector<Book*>>(genre, bookList));
         }
         else {
+
             std::vector<Book*> bookList = it->second;
             bookList.push_back(book);
+            it->second = bookList; //Never updated the vector in the map iterator after adding a new element
         }
     }
 }
